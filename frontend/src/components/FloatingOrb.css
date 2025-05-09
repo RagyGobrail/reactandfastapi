@@ -1,0 +1,16 @@
+.floating-orb {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #6bc5ff;
+  box-shadow: 0 0 25px 10px rgba(107, 197, 255, 0.7);
+  cursor: pointer;
+  position: absolute;
+  z-index: 0;
+}
+
+  
+  .floating-orb:hover {
+    box-shadow: 0 0 35px 15px rgba(255, 255, 255, 0.8);
+  }
+  
