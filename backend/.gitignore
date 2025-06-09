@@ -1,0 +1,5 @@
+venv/
+*.pkl
+*.dll
+*.pyd
+__pycache__/
