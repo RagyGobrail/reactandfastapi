@@ -1,7 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ranchers&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=Ysabeau+Infant:ital,wght@0,1..1000;1,1..1000&display=swap');
 /* App.css */
 #root {
   padding: 0;
@@ -130,10 +127,10 @@
 
 .header .logo {
   color: #fff;
+  font-family: "LXGW WenKai Mono TC";
   font-weight: 700;
   text-decoration: none;
   font-size: 2em;
-  text-transform: uppercase;
   letter-spacing: 2px;
   background: -webkit-linear-gradient(white, #616467);
   -webkit-background-clip: text;
@@ -185,7 +182,7 @@
 
 input::placeholder,
 ::placeholder {
-  font-family: Lato;
+  font-family: "LXGW WenKai Mono TC";
   font-size: 16px;
   /* Adjust size */
   font-style: normal;
@@ -350,7 +347,15 @@ iframe[src*="spotify.com"] {
   display: flex;
   gap: 10px;
 }
+.feedback-icons {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
 
+.feedback-icons svg:hover{
+  transform: scale(1.1);
+}
 .track-icons img {
   width: auto;
   height: 30px;
@@ -363,90 +368,17 @@ iframe[src*="spotify.com"] {
   transform: scale(1.1);
 }
 
-/*#title span {
-  background: -webkit-linear-gradient(white, #38495a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-#title {
-  position: relative;
-  top: 3%;
-  left: 0;
-  right: 0;
-  color: #fff;
-  text-align: center;
-  font-family: Lato;
-  font-weight: 550;
-  font-size: 55px;
-  letter-spacing: 10px;
-  margin-top: 100px;
-  margin-bottom: 80px; /* Add this line to create space below the title
-  padding-left: 10px;
-}
-.title-container {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 2rem 3rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 2rem auto;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-  max-width: 800px;
-}
-
-.title-main {
-  color: white;
-  font-size: 2.8rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  line-height: 1.3;
-  text-align: center;
-  margin: 0;
-  font-family: "'Inter', sans-serif";
-}
-
-.title-accent {
-  font-weight: 700;
-  background: linear-gradient(90deg, #00dbde, #fc00ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  display: inline-block;
-  padding: 0.5rem 0;
-}*/
-
 /* Add this to your App.css */
 .title-gradient {
-  background: linear-gradient(90deg, #00dbde, #fc00ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   font-size: 3.5rem;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 1px;
-  font-family: "Monoton", sans-serif;
+  font-family: "LXGW WenKai Mono TC";
   text-align: center;
   margin: 2rem 0;
 }
 
-@keyframes neon-pulse {
-  from {
-    text-shadow:
-      0 0 5px rgba(0, 255, 252, 0.7),
-      0 0 10px rgba(0, 255, 157, 0.7),
-      0 0 20px rgba(255, 0, 247, 0.7);
-  }
-  to {
-    text-shadow:
-      0 0 15px rgba(0, 255, 252, 0.7),
-      0 0 30px rgba(0, 255, 157, 0.7),
-      0 0 60px rgba(255, 0, 247, 0.7),
-      0 0 100px rgba(255, 0, 247, 0.7);
-  }
-}
 
 html {
     /*background: radial-gradient(ellipse at bottom, #2b1055 0%,#7597de 100%);*/
@@ -456,20 +388,26 @@ html {
 
 /* Mood Selector Styles */
 .mood-selector-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin-top: 120px; /* ⬅️ Adjust this as needed */
+  padding: 40px;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  border-radius: 24px;
   text-align: center;
+  backdrop-filter: blur(10px);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
 }
+
 
 .mood-title {
   color: white;
   font-size: 1.8rem;
   margin-bottom: 2rem;
-  font-weight: 600;
+  font-family: "Ysabeau Infant";
+  font-weight: bold;
+  font-size: 40px;
 }
 
 .mood-grid {
@@ -497,8 +435,8 @@ html {
 }
 
 .mood-card.selected {
-  background: #1DB954;
-  box-shadow: 0 4px 20px rgba(29, 185, 84, 0.3);
+  background: #300d65;
+  box-shadow: 0 4px 20px rgb(84, 43, 142);
   transform: scale(1.05);
 }
 
@@ -510,11 +448,12 @@ html {
 .mood-name {
   color: white;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-family: "Ysabeau Infant";
+  font-style: italic;
 }
 
 .generate-btn {
-  background: #1DB954;
+  background: #300d65;
   color: white;
   border: none;
   padding: 1rem 2rem;
@@ -527,9 +466,9 @@ html {
 }
 
 .generate-btn:hover {
-  background: #1ed760;
+  background: #542b8e;
   transform: scale(1.03);
-  box-shadow: 0 4px 20px rgba(29, 185, 84, 0.3);
+  box-shadow: 0 4px 20px rgb(115, 58, 197);
 }
 
 .generate-btn.disabled {
@@ -562,4 +501,10 @@ html {
 .mood-card {
   min-width: 120px;
   padding: 1rem;
+}
+
+.moodTitle{
+  font-family: "Ysabeau Infant";
+  font-weight: lighter;
+  font-size: 2rem;
 }

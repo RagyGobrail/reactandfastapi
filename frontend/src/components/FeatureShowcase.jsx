@@ -2,24 +2,6 @@ import { motion } from "framer-motion";
 import { FaSpotify, FaBrain, FaMusic } from "react-icons/fa";
 import styled from "styled-components";
 
-const features = [
-  {
-    icon: <FaSpotify size={40} />,
-    title: "Connect Spotify",
-    description: "Log in and paste your playlist link."
-  },
-  {
-    icon: <FaBrain size={40} />,
-    title: "Detect Mood",
-    description: "Choose what mood you want to listen to."
-  },
-  {
-    icon: <FaMusic size={40} />,
-    title: "Curate Vibes",
-    description: "Get personalized song suggestions based on your playlist."
-  }
-];
-
 const Container = styled.div`
   position: relative;
   display: flex;
@@ -96,7 +78,28 @@ const Description = styled.p`
   line-height: 1.5;
 `;
 
-export default function FeatureShowcase() {
+export default function FeatureShowcase({ setDiscoverMode }) {
+  const features = [
+    {
+      icon: <FaMusic size={40} />,
+      title: "Curate Tracks",
+      description: "Get personalised recommendations based on your playlist.",
+      onClick: () => setDiscoverMode("taste")
+    },
+    {
+      icon: <FaBrain size={40} />,
+      title: "Select Mood",
+      description: "Choose what mood you want to listen to.",
+      onClick: () => setDiscoverMode("mood")
+    },
+    {
+      icon: <FaSpotify size={40} />,
+      title: "Analyze Playlist",
+      description: "Paste your Spotify playlist link to uncover stats, mood, and more.",
+      onClick: () => setDiscoverMode("analyze")
+    }
+  ];
+
   return (
     <Container>
       {features.map((feature, index) => (
@@ -108,6 +111,8 @@ export default function FeatureShowcase() {
           whileHover={{
             boxShadow: "0 30px 50px rgba(0, 0, 0, 0.4)"
           }}
+          onClick={feature.onClick}
+          whileTap={{ scale: 0.95 }}
         >
           <IconWrapper>{feature.icon}</IconWrapper>
           <Description>{feature.description}</Description>

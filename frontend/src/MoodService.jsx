@@ -1,20 +1,56 @@
-// utils/MoodService.js
-export const fetchMoodTracks = async (moods, limit) => {
-  // For demo purposes - in production, replace with actual API calls
-  const mockMoodTracks = {
-    happy: [
-      {id: '11dFghVXANMlKmJXsNCbNl', name: 'Happy', artists: [{name: 'Pharrell Williams'}], album: {images: [{url: 'https://i.scdn.co/image/ab67616d0000b273e1d9c660d6be8a8a69f6bf37'}]}, uri: 'spotify:track:11dFghVXANMlKmJXsNCbNl'},
-      // Add more mock tracks...
-    ],
-    sad: [
-      {id: '3EEd6ldsPat620GVYMEhOP', name: 'Someone Like You', artists: [{name: 'Adele'}], album: {images: [{url: 'https://i.scdn.co/image/ab67616d0000b273e1d9c660d6be8a8a69f6bf37'}]}, uri: 'spotify:track:3EEd6ldsPat620GVYMEhOP'},
-      // Add more mock tracks...
-    ]
-  };
+// moodService.js
 
-  // Combine tracks from all selected moods
-  const allTracks = moods.flatMap(mood => mockMoodTracks[mood.toLowerCase()] || []);
+// Playlist IDs (just examples — replace with your real ones)
+const MOOD_PLAYLISTS = {
+  happy: "0RH319xCjeU8VyTSqCF6M4",
+  sad: "2XRyCthDk0L8ZK85YPjVwh",
+  chill: "63aOMpGXakIizfhsXu6p9E",
+  energetic: "0oxevpSGR2zITpujzwPCmj",
+  dancy: "18vUeZ9BdtMRNV6gI8RnR6"
+};
 
-  // Shuffle and limit
-  return [...allTracks].sort(() => 0.5 - Math.random()).slice(0, limit);
+// Helper to fetch tracks from a playlist
+const fetchPlaylistTracks = async (playlistId, limit = 100) => {
+  const token = localStorage.getItem("spotify_access_token");
+  const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=${limit}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await response.json();
+
+  return data.items
+    .map(item => item.track)
+    .filter(Boolean);
+};
+
+// Shuffle helper
+const getRandomSubset = (arr, count) => {
+  return [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
+};
+
+// Main export
+export const fetchMoodTracks = async (moods, limit = 20) => {
+  if (!moods || moods.length === 0) return [];
+
+  if (moods.length === 1) {
+    const playlistId = MOOD_PLAYLISTS[moods[0]];
+    const tracks = await fetchPlaylistTracks(playlistId);
+    return getRandomSubset(tracks, limit);
+  }
+
+  if (moods.length === 2) {
+    const playlistId1 = MOOD_PLAYLISTS[moods[0]];
+    const playlistId2 = MOOD_PLAYLISTS[moods[1]];
+
+    const [tracks1, tracks2] = await Promise.all([
+      fetchPlaylistTracks(playlistId1),
+      fetchPlaylistTracks(playlistId2)
+    ]);
+
+    return [
+      ...getRandomSubset(tracks1, Math.floor(limit / 2)),
+      ...getRandomSubset(tracks2, Math.ceil(limit / 2))
+    ];
+  }
+
+  return [];
 };

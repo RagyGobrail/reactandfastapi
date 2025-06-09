@@ -9,6 +9,7 @@ import FeatureShowcase from './components/FeatureShowcase';
 import MoodSelector from './MoodSelector';
 import { fetchMoodTracks } from './moodService';
 import { generateRandomString, generateCodeChallenge } from './utils';
+import PlaylistAnalyzer from './components/PlaylistAnalyzer';
 
 const CLIENT_ID = '69502891fbf84d65b1b8f6815894e7e7';
 const REDIRECT_URI = 'http://localhost:5173/callback';
@@ -23,16 +24,13 @@ function App() {
   const [discoverMode, setDiscoverMode] = useState(null);
   const [selectedMoods, setSelectedMoods] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [analysisData, setAnalysisData] = useState(null);
 
-
-  // Add this inside your App component
 const handleGenerateMoodSongs = async () => {
+  if (!selectedMoods.length) return;
   setIsLoading(true);
   try {
-    // Get tracks based on mood (replace with real API call)
-    const moodTracks = await fetchMoodTracks([selectedMood], 20);
-
-    // Format to match your existing track structure
+    const moodTracks = await fetchMoodTracks(selectedMoods, 20);
     const formattedTracks = moodTracks.map(track => ({
       track: {
         id: track.id,
@@ -40,18 +38,19 @@ const handleGenerateMoodSongs = async () => {
         artists: track.artists,
         album: track.album,
         uri: track.uri,
-        external_urls: {spotify: `https://open.spotify.com/track/${track.id}`}
+        external_urls: track.external_urls
       }
     }));
-
     setTracks(formattedTracks);
-  } catch (error) {
-    console.error("Mood track generation failed:", error);
-    alert("Could not generate mood playlist");
+  } catch (err) {
+    console.error("Failed to load mood tracks:", err);
+    alert("Login to Spotify First.");
   } finally {
     setIsLoading(false);
   }
 };
+
+
 
   // Exchange code for token on first load
   useEffect(() => {
@@ -129,49 +128,58 @@ const handleGenerateMoodSongs = async () => {
         setTracks([]);
       }} />
 
-      <div className="wrapper">
-        <motion.div
-  initial={{ opacity: 0, y: 40 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1, ease: "easeOut" }}
-  style={{
-    position: 'relative',
-    zIndex: 50,
-    marginTop: '150px',
-    marginBottom: '40px',
-    textAlign: 'center'
-  }}
->
-  <h1 style={{
-    color: 'rgba(149,251,249,0.6)', // Bright cyan fallback
-    background: 'linear-gradient(90deg, #00fffc, #00ff9d, #ff00f7)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    fontSize: '3.5rem',
-    fontWeight: '700',
-    lineHeight: '1.2',
-    letterSpacing: '3px', // Increased for neon effect
-    fontFamily: "'Monoton', sans-serif",
-    margin: '0',
-    padding: '0 20px',
-    textShadow: `
-      0 0 5px #00fffc,
-      0 0 10px #00fffc,
-      0 0 20px #00ff9d,
-      0 0 40px #ff00f7,
-      0 0 80px #ff00f7
-    `,
-    animation: 'neon-pulse 1.5s ease-in-out infinite alternate',
-    WebkitTextStroke: '0.5px rgba(255,255,255,0.8)' // Better edge definition
-  }}>
-    Discover More<br />About Your Mood!
-  </h1>
-</motion.div>
 
-        {!discoverMode && <FeatureShowcase />}
+      <div className="wrapper">
+        {discoverMode !== "mood" && (
+        <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        style={{
+        position: 'relative',
+        zIndex: 50,
+        marginTop: '150px',
+        marginBottom: '40px',
+        textAlign: 'center'
+        }}
+        >
+        <h1 style={{
+          color: 'rgba(255,255,255,0.9)', // Bright cyan fallback
+          lineHeight: '1',
+          letterSpacing: '2.5px', // Increased for neon effect
+          fontFamily: "'Ysabeau Infant'",
+          fontWeight: 'Bold',
+          fontSize: '84px',
+          padding: '0 20px',
+          marginBottom: '28px'
+        }}>
+          Harmonyǎ
+        </h1>
+
+          <h1
+            style={{
+          color: 'rgba(255,255,255,0.7)', // Bright cyan fallback
+          lineHeight: '1',
+          letterSpacing: '1.5px', // Increased for neon effect
+          fontFamily: "'Ysabeau Infant'",
+          fontWeight: 'Thin',
+          fontStyle: 'italic',
+          fontSize: '40px',
+          padding: '0 20px',
+          marginTop: '0'
+        }}>
+          Serendipity in Sinc
+          </h1>
+        </motion.div>
+        )}
+
+        {!discoverMode && <FeatureShowcase setDiscoverMode={setDiscoverMode} />}
 
         {discoverMode === "taste" && (
-          <SearchBar setSearchQuery={setSearchQuery} setTracks={setTracks} />
+            <>
+            <h className="moodTitle">Discover By Your Taste</h>
+            <SearchBar mode="recommend" setTracks={setTracks} />
+            </>
         )}
 
         {discoverMode === "mood" && (
@@ -183,6 +191,14 @@ const handleGenerateMoodSongs = async () => {
               isLoading={isLoading}
             />
             {tracks.length > 0 && <SearchResults tracks={tracks} />}
+          </>
+        )}
+
+        {discoverMode === "analyze" && (
+          <>
+            <h className="moodTitle">Analyze Your Playlist</h>
+            <SearchBar mode="analyze" setAnalysisData={setAnalysisData} />
+            <PlaylistAnalyzer analysisData={analysisData} />
           </>
         )}
 

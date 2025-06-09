@@ -1,9 +1,30 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import axios from 'axios';
 
 function SearchResults({ tracks }) {
     const [embedTrack, setEmbedTrack] = useState(null);
+    const [feedback, setFeedback] = useState({});
+    // Load feedback from localStorage on mount
+    useEffect(() => {
+        const stored = localStorage.getItem("track_feedback");
+        if (stored) {
+            setFeedback(JSON.parse(stored));
+        }
+    }, []);
+
+    // Save feedback to localStorage
+    const updateFeedback = (trackUri, type) => {
+    setFeedback(prev => {
+        const newFeedback = {
+            ...prev,
+            [trackUri]: prev[trackUri] === type ? null : type
+        };
+        localStorage.setItem("track_feedback", JSON.stringify(newFeedback));
+        return newFeedback;
+    });
+};
 
     const handleSpotifyClick = (trackId, index) => {
         setEmbedTrack(prev =>
@@ -118,6 +139,8 @@ function SearchResults({ tracks }) {
                         const artist = track.track?.artists?.[0]?.name || "Unknown Artist";
                         const image = track.track?.album?.images?.[0]?.url || "https://via.placeholder.com/64";
                         const query = `${name} ${artist}`;
+                        const trackUri = track.track?.uri;
+                        const feedbackValue = feedback[trackUri];
 
                         return (
                             <div key={id}>
@@ -127,7 +150,22 @@ function SearchResults({ tracks }) {
                                         <div className="track-name">{name}</div>
                                         <div className="track-artist">{artist}</div>
                                     </div>
+
                                     <div className="track-icons">
+                                        <div className="feedback-icons">
+                                            <FaThumbsUp
+                                                onClick={() => updateFeedback(trackUri, 'like')}
+                                                size={20}
+                                                color={feedbackValue === 'like' ? '#0059ff' : '#ccc'}
+                                                style={{ marginRight: '8px', cursor: 'pointer' }}
+                                            />
+                                            <FaThumbsDown
+                                                onClick={() => updateFeedback(track.track.uri, 'dislike')}
+                                                size={20}
+                                                color={feedbackValue === 'dislike' ? '#FF4C4C' : '#ccc'}
+                                                style={{ marginRight: '12px', cursor: 'pointer' }}
+                                            />
+                                        </div>
                                         <img
                                             src="src/assets/Spotify_logo.png"
                                             className="spotify-icon"

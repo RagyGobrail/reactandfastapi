@@ -97,9 +97,19 @@ const Header = ({ setDiscoverMode }) => {
 
     return (
         <header className={`header ${hideNavbar ? 'hide-navbar' : ''}`}>
-            <a href="#" className="logo">Logo</a>
+            <a href="#" className="logo">HarmoN雅</a>
             <nav className="navbar">
-                <a href="#">Home</a>
+                <a
+                    href="#"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setDiscoverMode(null); // This will reset to show FeatureShowcase
+                        setDropdownVisible(false);
+                        setDiscoverOpen(false);
+                    }}
+                >
+                    Home
+                </a>
 
                 <div className="discover-menu" ref={discoverRef}>
                     <div className="discover-wrapper">
@@ -117,6 +127,7 @@ const Header = ({ setDiscoverMode }) => {
                             <div className="dropdown-discover">
                                 <button onClick={() => setDiscoverMode("taste")}>Discover by my Taste</button>
                                 <button onClick={() => setDiscoverMode("mood")}>Discover by my Mood</button>
+                                <button onClick={() => setDiscoverMode("analyze")}>Analyze my Playlist</button>
                             </div>
                         )}
                     </div>
