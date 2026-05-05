@@ -4,3 +4,4 @@ pandas
 tensorflow
 python-multipart
 pydantic
+python-dotenv
