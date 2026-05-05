@@ -7,7 +7,7 @@ import './App.css';
 import FloatingDots from './components/FloatingDots';
 import FeatureShowcase from './components/FeatureShowcase';
 import MoodSelector from './MoodSelector';
-import { fetchMoodTracks } from './moodService';
+import { fetchMoodTracks } from './MoodService';
 import { generateRandomString, generateCodeChallenge } from './utils';
 import PlaylistAnalyzer from './components/PlaylistAnalyzer';
 
