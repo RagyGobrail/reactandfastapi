@@ -29,7 +29,7 @@ app = FastAPI(title="Spotify Recommender")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Frontend origin
+    allow_origins=["*"],  # Frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
