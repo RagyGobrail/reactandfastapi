@@ -12,7 +12,7 @@ import { generateRandomString, generateCodeChallenge } from './utils';
 import PlaylistAnalyzer from './components/PlaylistAnalyzer';
 
 const CLIENT_ID = '69502891fbf84d65b1b8f6815894e7e7';
-const REDIRECT_URI = 'http://localhost:5173/callback';
+const REDIRECT_URI = 'http://127.0.0.1:5173/callback';
 const SCOPES = 'user-read-private user-read-email streaming';
 
 function App() {
